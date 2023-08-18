@@ -8,3 +8,8 @@ What does it take in?
 Special cases:
     how to seperate = and ==?
         you can use flags to figure out how those special cases are used
+
+Steps:
+    1. divide a string by just character
+    2. check if a char is a keywords
+    3. identify single-char and multi-char keywords
