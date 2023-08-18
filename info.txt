@@ -1,0 +1,10 @@
+What is a lexer?
+    given an input like a string or a command, each character
+    is seperated by keywords and turned into lexems (recognizable piece of string)
+
+What does it take in?
+    it needs code to disect and also keywords to sperate the code
+
+Special cases:
+    how to seperate = and ==?
+        you can use flags to figure out how those special cases are used
