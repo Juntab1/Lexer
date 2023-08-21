@@ -35,13 +35,22 @@ public class Lexing {
         ArrayList<String> multiCharKey = new ArrayList<>(Arrays.asList("String", "int", "public", "static", "void",
                 "main", "for", "class", "\n", "//", "/*", "*/"));
         String ans = "";
-        // implementation might be wrong but the idea will be there
+
         for (int i = 0; i < test.length(); i++) {
             char curr = test.charAt(i);
             if (curr != ' ') {
-                ans += test.charAt(i);
+                ans += curr;
             }
-            if (singleCharKey.contains(Character.toString(curr))) {
+            // special case for checking if "*" is considered a single char or a multi
+            if ((ans.equals("*")) || (ans.equals("/")) && (i + 1) < (test.length() - 1)) {
+                if (test.charAt(i+1) == '/' || test.charAt(i+1) == '*'){
+                    ans += test.charAt(i+1);
+                    System.out.println(ans.replace("\n", "<New Line>"));
+                    ans = "";
+                    i++;
+                }
+            }
+            else if (singleCharKey.contains(Character.toString(curr))) {
                 ans = ans.substring(0, ans.length() - 1);
                 if (!ans.equals("")) {
                     System.out.println(ans.replace("\n", "<New Line>"));
@@ -52,18 +61,16 @@ public class Lexing {
                 if ((i + 1) < (test.length() - 1)) {
                     ans += test.charAt(i + 1);
                     if (multiCharKey.contains(ans)) {
-                        System.out.println(ans.replace("\n", "<New Line>"));
-                        ans = "";
                         i++;
                     } else {
                         ans = ans.substring(0, ans.length() - 1);
-                        System.out.println(ans.replace(" \n", "<New Line>"));
-                        ans = "";
                     }
-                } else {
+                    System.out.println(ans.replace("\n", "<New Line>"));
+                } 
+                else {
                     System.out.println(ans);
-                    ans = "";
                 }
+                ans = "";
             } else if (multiCharKey.contains(ans)) {
                 System.out.println(ans.replace("\n", "<New Line>"));
                 ans = "";
@@ -77,8 +84,6 @@ public class Lexing {
                 }
                 ans = "";
             }
-
-            // FIX: later need to add next line case to show as a line of command
         }
     }
 }
