@@ -3,6 +3,7 @@ import java.util.Arrays;
 
 public class Lexing {
     public static void main(String args[]) {
+        String oneLine = "Hello";
         String test = """
                     public class Test {
                         // main function
@@ -33,19 +34,21 @@ public class Lexing {
         ArrayList<String> singleCharKey = new ArrayList<>(
                 Arrays.asList("(", ")", "{", "}", ";", ".", "\"", ";", "*", "\\", ",", ":", "[", "]"));
         ArrayList<String> multiCharKey = new ArrayList<>(Arrays.asList("String", "int", "public", "static", "void",
-                "main", "for", "class", "\n", "//", "/*", "*/"));
+                "main", "for", "class", "//", "/*", "*/"));
         String ans = "";
+        int currLength = oneLine.length();
+        String currString = oneLine;
 
-        for (int i = 0; i < test.length(); i++) {
-            char curr = test.charAt(i);
+        for (int i = 0; i < currLength; i++) {
+            char curr = currString.charAt(i);
             if (curr != ' ') {
                 ans += curr;
             }
-            // special case for checking if "*" is considered a single char or a multi
-            if ((ans.equals("*")) || (ans.equals("/")) && (i + 1) < (test.length() - 1)) {
-                if (test.charAt(i+1) == '/' || test.charAt(i+1) == '*'){
-                    ans += test.charAt(i+1);
-                    System.out.println(ans.replace("\n", "<New Line>"));
+            // special case for checking if "*" is considered a single char or a multi also covers comments single/multi line
+            if ((ans.equals("*")) || (ans.equals("/")) && (i + 1) < (currLength - 1)) {
+                if (currString.charAt(i+1) == '/' || currString.charAt(i+1) == '*'){
+                    ans += currString.charAt(i+1);
+                    System.out.println("Comment: " + ans.replace("\n", "<New Line>"));
                     ans = "";
                     i++;
                 }
@@ -53,34 +56,51 @@ public class Lexing {
             else if (singleCharKey.contains(Character.toString(curr))) {
                 ans = ans.substring(0, ans.length() - 1);
                 if (!ans.equals("")) {
-                    System.out.println(ans.replace("\n", "<New Line>"));
+                    if (ans.contains("\n")){
+                        System.out.println("String: " + ans.trim());
+                        System.out.println("<New Line>");
+                    }
+                    else{
+                        System.out.println("String: " + ans);
+                    }
                 }
-                System.out.println(curr);
+                System.out.println("Char: " + curr);
                 ans = "";
             } else if (singleCharKey.contains(ans)) {
-                if ((i + 1) < (test.length() - 1)) {
-                    ans += test.charAt(i + 1);
+                if ((i + 1) < (currLength - 1)) {
+                    ans += currString.charAt(i + 1);
                     if (multiCharKey.contains(ans)) {
+                        if (ans.contains("\n")){
+                            System.out.println("String: " + ans.trim());
+                            System.out.println("<New Line>");
+                        }
+                        else{
+                            System.out.println("String: " + ans);
+                        }
                         i++;
                     } else {
                         ans = ans.substring(0, ans.length() - 1);
+                        System.out.println("Char: " + ans.replace("\n", "<New Line>"));
                     }
-                    System.out.println(ans.replace("\n", "<New Line>"));
                 } 
                 else {
-                    System.out.println(ans);
+                    System.out.println("Char: " + ans);
                 }
                 ans = "";
             } else if (multiCharKey.contains(ans)) {
-                System.out.println(ans.replace("\n", "<New Line>"));
+                System.out.println("String: " + ans.replace("\n", "<New Line>"));
                 ans = "";
-            } else if (!ans.isEmpty() && curr == ' ') {
-                if (ans.contains("\n")){
-                    System.out.println(ans.trim());
+            } else if ((!ans.isEmpty() && curr == ' ') || ans.length() == currLength) {
+                // first if case needed becuasee \n was being counted as a string 
+                if (ans.equals("\n")){
+                    System.out.println("<New Line>");
+                }
+                else if (ans.contains("\n")){
+                    System.out.println("String: " + ans.trim());
                     System.out.println("<New Line>");
                 }
                 else{
-                    System.out.println(ans);
+                    System.out.println("String: " + ans);
                 }
                 ans = "";
             }
