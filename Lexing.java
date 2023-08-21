@@ -44,7 +44,7 @@ public class Lexing {
             if (singleCharKey.contains(Character.toString(curr))) {
                 ans = ans.substring(0, ans.length() - 1);
                 if (!ans.equals("")) {
-                    System.out.println(ans.replace("\n", "<NewLine>"));
+                    System.out.println(ans.replace("\n", "<New Line>"));
                 }
                 System.out.println(curr);
                 ans = "";
@@ -52,12 +52,12 @@ public class Lexing {
                 if ((i + 1) < (test.length() - 1)) {
                     ans += test.charAt(i + 1);
                     if (multiCharKey.contains(ans)) {
-                        System.out.println(ans.replace("\n", "<NewLine>"));
+                        System.out.println(ans.replace("\n", "<New Line>"));
                         ans = "";
                         i++;
                     } else {
                         ans = ans.substring(0, ans.length() - 1);
-                        System.out.println(ans.replace(" \n", "<NewLine>"));
+                        System.out.println(ans.replace(" \n", "<New Line>"));
                         ans = "";
                     }
                 } else {
@@ -65,12 +65,12 @@ public class Lexing {
                     ans = "";
                 }
             } else if (multiCharKey.contains(ans)) {
-                System.out.println(ans.replace("\n", "<NewLine>"));
+                System.out.println(ans.replace("\n", "<New Line>"));
                 ans = "";
             } else if (!ans.isEmpty() && curr == ' ') {
                 if (ans.contains("\n")){
                     System.out.println(ans.trim());
-                    System.out.println("<NewLine>");
+                    System.out.println("<New Line>");
                 }
                 else{
                     System.out.println(ans);
